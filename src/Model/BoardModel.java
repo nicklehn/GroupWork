@@ -18,6 +18,7 @@ public class BoardModel {
 
     }
 
+
     // Minen random setzen
     private void setMines() {
 
@@ -53,6 +54,10 @@ public class BoardModel {
                 }
             }
         }
+    }
+
+    public int getNumberOfMines() {
+        return numberOfMines;
     }
 
 }
