@@ -60,4 +60,16 @@ public class BoardModel {
         return numberOfMines;
     }
 
+    public int getWidth() {
+        return board[0].length;
+    }
+
+    public int getLength() {
+        return board.length;
+    }
+
+    public CellsModel getCellAt(int row, int column) throws IndexOutOfBoundsException {
+        return board[row][column];
+    }
+
 }

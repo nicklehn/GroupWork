@@ -13,9 +13,29 @@ public class CellsModel {
     private boolean isFlag;
     private boolean isOpen;
 
+    // Wert für Bombenabfrage
+    private String value;
+
     // Zellen in Umgebung
     private BoardModel gameBoard;
-    private ArrayList<CellsModel> nextCells;
+    private ArrayList<CellsModel> cellsAround;
+
+    // Zellenkonstruktor
+    public CellsModel(int x, int y, boolean isMine, BoardModel board){
+        this.isMine = isMine;
+        this.isFlag = false;
+        this.isOpen = false;
+
+        this.gameBoard = board;
+        cellsAround= new ArrayList<>();
+
+        this.xPos = x;
+        this.yPos = y;
+
+        if (this.isMine) {
+            value = "X";
+        }
+    }
 
     public int getXPos() {
         return xPos;
@@ -41,22 +61,56 @@ public class CellsModel {
         isOpen = open;
     }
 
-    // Zellenkonstruktor
-    public CellsModel(int x, int y, boolean isMine, BoardModel board){
-        this.isMine = isMine;
-        this.isFlag = false;
-        this.isOpen = false;
-
-        this.gameBoard = board;
-        nextCells = new ArrayList<>();
-
-        this.xPos = x;
-        this.yPos = y;
-    }
-
     // Minenabfrage
     public boolean isMine() {
         return isMine;
+    }
+
+    public ArrayList<CellsModel> getCellsAround() {
+
+        if (cellsAround.isEmpty() || cellsAround.contains(null)) {
+            setCellsAround();
+        }
+
+        return cellsAround;
+
+    }
+
+    public void setCellsAround() {
+        for (int i = xPos - 1; i <= xPos + 1; i++) {
+            for (int j = yPos - 1; j <= yPos + 1; j++) {
+
+                if (i == xPos && j == xPos) {
+
+                } else {
+                    if (i >= gameBoard.getLength() || j >= gameBoard.getWidth() || i < 0 || j < 0) {
+                        continue;
+                    } else {
+                        cellsAround.add(gameBoard.getCellAt(i, j));
+                    }
+                }
+            }
+        }
+    }
+
+    public void setValue() {
+
+        if (isMine) {
+            return;
+        }
+
+        if(value == null) {
+
+            int minesAround = 0;
+
+            for (CellsModel cell : getCellsAround()) {
+                if (cell.isMine()) {
+                    minesAround++;
+                }
+            }
+
+            value = Integer.toString(minesAround);
+        }
     }
 
 
