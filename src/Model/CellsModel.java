@@ -21,4 +21,8 @@ public class CellsModel {
         this.yPos = y;
     }
 
+    public boolean isMine() {
+        return isMine;
+    }
+
 }

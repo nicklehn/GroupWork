@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Random;
+
 public class BoardModel {
 
     // Anzahl der Minen
@@ -14,6 +16,43 @@ public class BoardModel {
         this.numberOfMines = numberOfMines;
         board = new CellsModel[length][width];
 
+    }
+
+    // Minen random setzen
+    private void setMines() {
+
+        int currentNumberOfMines = 0;
+
+        // Objekt für zufällige Zahl
+        Random random = new Random();
+
+        while (currentNumberOfMines < numberOfMines) {
+
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board[0].length ; j++) {
+
+                    double probability;
+                    probability = random.nextDouble();
+
+                    // Spielfeld leer
+                    if (board[i][j]==null){
+                        if (probability > 0.99999 && currentNumberOfMines < numberOfMines) {
+                            board[i][j] = new CellsModel(i, j, false, this);
+                            currentNumberOfMines++;
+                        } else {
+                            board[i][j] = new CellsModel(i, j , false, this);
+                        }
+                    // Mine im Spielfeld
+                    } else if (board[i][j].isMine()){
+
+                    // Restliches Spielfeld
+                    } else if (probability > 0.99999 && currentNumberOfMines < numberOfMines){
+                        board[i][j] = new CellsModel(i, j, true, this);
+                        currentNumberOfMines++;
+                    }
+                }
+            }
+        }
     }
 
 }
