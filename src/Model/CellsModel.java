@@ -66,6 +66,7 @@ public class CellsModel {
         return isMine;
     }
 
+    // Zellenabfrage
     public ArrayList<CellsModel> getCellsAround() {
 
         if (cellsAround.isEmpty() || cellsAround.contains(null)) {
@@ -76,6 +77,7 @@ public class CellsModel {
 
     }
 
+    // Zellen setzen
     public void setCellsAround() {
         for (int i = xPos - 1; i <= xPos + 1; i++) {
             for (int j = yPos - 1; j <= yPos + 1; j++) {
