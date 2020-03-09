@@ -95,6 +95,7 @@ public class CellsModel {
         }
     }
 
+    // Werte für Erkennung setzen
     public void setValue() {
 
         if (isMine) {
