@@ -4,72 +4,97 @@ import java.util.Random;
 
 public class BoardModel {
 
-    // Anzahl der Minen
-    private final int numberOfMines;
+    private static int cellsHeight;
+    private static int cellsWidth;
+    private static int mineCount;
+    private static int flagCount;
+    private static CellsModel[][] cellsBoard;
 
-    // Spielfeld mit Zellen
-    private final CellsModel[][] board;
+    public BoardModel(int height, int width) {
+        this.cellsHeight = height;
+        this.cellsWidth = width;
+        cellsBoard = new CellsModel[cellsHeight][cellsWidth];
+    }
 
-    // Spielfeld Konstruktor
-    public BoardModel(int length, int width, int numberOfMines){
+    public void setMines(){
+        Random rn = new Random();
+        for (int i = 0; i < mineCount ; i++) {
+            int j, k;
+            j = rn.nextInt(cellsWidth);
+            k = rn.nextInt(cellsHeight);
+            if (cellsBoard[j][k].checkMine() == false) {
+                cellsBoard[j][k].setMine();
+                cellsBoard[j][k].setCellsValue("x");
+            }
+        }
+    }
 
-        this.numberOfMines = numberOfMines;
-        board = new CellsModel[length][width];
+    public int checkCellsAround(CellsModel currCell) throws Exception{
+
+        int mineCounter = 0;
+
+        for (int i = currCell.getXPos() - 1; i < currCell.getXPos() + 1; i++) {
+            for (int j = currCell.getYPos() - 1; j < currCell.getYPos() + 1; j++) {
+
+                try {
+
+                    if (cellsBoard[j][i].checkMine()){
+                        mineCounter++;
+                    } else {
+                        continue;
+                    }
+
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    continue;
+                }
+
+            }
+        }
+
+        return mineCounter;
+    }
+
+    public void setFlag (CellsModel currCell) {
+        if (currCell.checkFlag() == false && flagCount < mineCount ) {
+            currCell.setFlag(true);
+            flagCount++;
+        } else if (currCell.checkFlag()){
+            currCell.setFlag(false);
+            flagCount--;
+        }
+
+        // win check
 
     }
 
+    public void openCells (CellsModel currCell) throws Exception {
+        if(currCell.checkOpen() || currCell.checkFlag()){
+            return;
+        }
 
-    // Minen random setzen
-    private void setMines() {
+        if (currCell.checkMine()){
+            showBoard();
+            // game over
+        }
 
-        int currentNumberOfMines = 0;
+        if (currCell.checkOpen() == false) {
+            currCell.setOpen(true);
+            checkCellsAround(currCell);
+        }
 
-        // Objekt für zufällige Zahl
-        Random random = new Random();
+        // win check
 
-        while (currentNumberOfMines < numberOfMines) {
+    }
 
-            for (int i = 0; i < board.length; i++) {
-                for (int j = 0; j < board[0].length ; j++) {
-
-                    double probability;
-                    probability = random.nextDouble();
-
-                    // Spielfeld leer
-                    if (board[i][j]==null){
-                        if (probability > 0.99999 && currentNumberOfMines < numberOfMines) {
-                            board[i][j] = new CellsModel(i, j, false, this);
-                            currentNumberOfMines++;
-                        } else {
-                            board[i][j] = new CellsModel(i, j , false, this);
-                        }
-                    // Mine im Spielfeld
-                    } else if (board[i][j].isMine()){
-
-                    // Restliches Spielfeld
-                    } else if (probability > 0.99999 && currentNumberOfMines < numberOfMines){
-                        board[i][j] = new CellsModel(i, j, true, this);
-                        currentNumberOfMines++;
-                    }
+    public void showBoard() {
+        for (int i = 0; i < cellsHeight; i++) {
+            for (int j = 0; j <  cellsWidth; j++) {
+                if (cellsBoard[j][i].checkMine() && cellsBoard[j][i].checkFlag() == false){
+                    cellsBoard[j][i].setCellsValue(cellsBoard[j][i].getCellsValue());
                 }
             }
         }
     }
 
-    public int getNumberOfMines() {
-        return numberOfMines;
-    }
-
-    public int getWidth() {
-        return board[0].length;
-    }
-
-    public int getLength() {
-        return board.length;
-    }
-
-    public CellsModel getCellAt(int row, int column) throws IndexOutOfBoundsException {
-        return board[row][column];
-    }
 
 }

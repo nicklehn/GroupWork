@@ -1,121 +1,84 @@
 package Model;
 
-import java.util.ArrayList;
-
 public class CellsModel {
 
-    // Position der Zellen
-    private final int xPos;
-    private final int yPos;
-
-    // Eigenschaften der Zelle (Mine, Flagge, offen)
-    private final boolean isMine;
-    private boolean isFlag;
-    private boolean isOpen;
-
-    // Wert für Bombenabfrage
-    private String value;
-
-    // Zellen in Umgebung
+    private static String cellsValue;
     private BoardModel gameBoard;
-    private ArrayList<CellsModel> cellsAround;
+    private static int xPos;
+    private static int yPos;
+    private static boolean isMine;
+    private static boolean isFlag;
+    private static boolean isOpen;
 
-    // Zellenkonstruktor
-    public CellsModel(int x, int y, boolean isMine, BoardModel board){
-        this.isMine = isMine;
-        this.isFlag = false;
-        this.isOpen = false;
 
-        this.gameBoard = board;
-        cellsAround= new ArrayList<>();
+    public CellsModel(int x, int y, BoardModel board){
 
         this.xPos = x;
         this.yPos = y;
 
-        if (this.isMine) {
-            value = "X";
+        this.isMine = false;
+        this.isFlag = false;
+        this.isOpen = false;
+
+        this.gameBoard = board;
+
+        if(isMine){
+            cellsValue = "x";
+        } else if (isFlag) {
+            cellsValue = "f";
+        } else if (isOpen) {
+            cellsValue = "o";
         }
+
     }
 
-    public int getXPos() {
-        return xPos;
-    }
 
-    public int getYPos() {
-        return yPos;
-    }
-
-    public boolean isFlag() {
-        return isFlag;
-    }
-
-    public void setFlag(boolean flag) {
-        isFlag = flag;
-    }
-
-    public boolean isOpen() {
-        return isOpen;
-    }
-
-    public void setOpen(boolean open) {
-        isOpen = open;
-    }
-
-    // Minenabfrage
-    public boolean isMine() {
+    public boolean checkMine () {
         return isMine;
     }
 
-    // Zellenabfrage
-    public ArrayList<CellsModel> getCellsAround() {
-
-        if (cellsAround.isEmpty() || cellsAround.contains(null)) {
-            setCellsAround();
-        }
-
-        return cellsAround;
-
+    public void setMine() {
+        this.isMine = true;
     }
 
-    // Zellen setzen
-    public void setCellsAround() {
-        for (int i = xPos - 1; i <= xPos + 1; i++) {
-            for (int j = yPos - 1; j <= yPos + 1; j++) {
-
-                if (i == xPos && j == xPos) {
-
-                } else {
-                    if (i >= gameBoard.getLength() || j >= gameBoard.getWidth() || i < 0 || j < 0) {
-                        continue;
-                    } else {
-                        cellsAround.add(gameBoard.getCellAt(i, j));
-                    }
-                }
-            }
-        }
+    public void setCellsValue(String st){
+        this.cellsValue = st;
     }
 
-    // Werte für Erkennung setzen
-    public void setValue() {
+    public static String getCellsValue() {
+        return cellsValue;
+    }
 
-        if (isMine) {
-            return;
-        }
+    public static int getXPos() {
+        return xPos;
+    }
 
-        if(value == null) {
+    public static void setXPos(int xPos) {
+        CellsModel.xPos = xPos;
+    }
 
-            int minesAround = 0;
+    public static int getYPos() {
+        return yPos;
+    }
 
-            for (CellsModel cell : getCellsAround()) {
-                if (cell.isMine()) {
-                    minesAround++;
-                }
-            }
-
-            value = Integer.toString(minesAround);
-        }
+    public static void setYPos(int yPos) {
+        CellsModel.yPos = yPos;
     }
 
 
+    public static boolean checkFlag() {
+        return isFlag;
+    }
 
+    public static void setFlag(boolean isFlag) {
+        CellsModel.isFlag = isFlag;
+    }
+
+    public static boolean checkOpen() {
+        return isOpen;
+    }
+
+    public static void setOpen(boolean isOpen) {
+        CellsModel.isOpen = isOpen;
+    }
 }
