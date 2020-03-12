@@ -25,9 +25,8 @@ public class CellsModel {
      * Konstruktor
      * @param x
      * @param y
-     * @param board
      */
-    public CellsModel(int x, int y, BoardModel board){
+    public CellsModel(int x, int y){
 
         this.xPos = x;
         this.yPos = y;
@@ -36,7 +35,7 @@ public class CellsModel {
         this.isFlag = false;
         this.isOpen = false;
 
-        this.gameBoard = board;
+       // this.gameBoard = board;
 
         if(isMine){
             cellsValue = "x";

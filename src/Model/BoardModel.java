@@ -102,7 +102,7 @@ public class BoardModel {
 
         if (currCell.checkMine()){
             showBoard();
-            // game over
+            gameOver();
         }
 
         if (currCell.checkOpen() == false) {
@@ -110,7 +110,7 @@ public class BoardModel {
             checkCellsAround(currCell);
         }
 
-        // win check
+        winCheck();
 
     }
 
@@ -127,5 +127,48 @@ public class BoardModel {
         }
     }
 
+
+    /**
+     * Gewinnkonditionen überprüfen
+     */
+    public void winCheck(){
+        System.out.println("wincheck");
+    }
+
+    /**
+     * Spiel verloren
+     */
+    public void gameOver(){
+        System.out.println("gameover");
+    }
+
+    /**
+     * Spielfeld initialisieren
+     */
+    public void initBoard(){
+
+        /**
+         * Zellen erstellen und Spielfeld füllen
+         */
+        for (int i = 0; i < cellsHeight; i++) {
+            for (int j = 0; j < cellsWidth; j++) {
+                CellsModel newCell = new CellsModel(j, i);
+                cellsBoard[j][i] = newCell;
+            }
+        }
+        setMines();
+
+        /**
+         * Minen zählen
+         */
+        mineCount = 0;
+        for (int i = 0; i < cellsHeight; i++) {
+            for (int j = 0; j < cellsWidth; j++) {
+                if(cellsBoard[j][i].checkMine()){
+                    mineCount++;
+                }
+            }
+        }
+    }
 
 }
