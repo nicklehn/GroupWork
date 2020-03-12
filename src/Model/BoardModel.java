@@ -2,9 +2,6 @@ package Model;
 
 import java.util.Random;
 
-/**
- * Klasse für Spielfeld
- */
 public class BoardModel {
 
     private static int cellsHeight;
@@ -14,6 +11,10 @@ public class BoardModel {
     private static int flagCount;
 
     private static CellsModel[][] cellsBoard;
+
+    public static CellsModel[][] getCellsBoard() {
+        return cellsBoard;
+    }
 
     /**
      * Konstruktor
