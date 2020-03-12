@@ -1,16 +1,32 @@
 package Model;
 
+/**
+ * Klasse für Zellen
+ */
 public class CellsModel {
 
     private static String cellsValue;
     private BoardModel gameBoard;
+
+    /**
+     * Position der Zellen
+     */
     private static int xPos;
     private static int yPos;
+
+    /**
+     * Zustand der Zellen (Mine,Flagge,offen)
+     */
     private static boolean isMine;
     private static boolean isFlag;
     private static boolean isOpen;
 
-
+    /**
+     * Konstruktor
+     * @param x
+     * @param y
+     * @param board
+     */
     public CellsModel(int x, int y, BoardModel board){
 
         this.xPos = x;

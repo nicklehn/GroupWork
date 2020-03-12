@@ -2,20 +2,33 @@ package Model;
 
 import java.util.Random;
 
+/**
+ * Klasse für Spielfeld
+ */
 public class BoardModel {
 
     private static int cellsHeight;
     private static int cellsWidth;
+
     private static int mineCount;
     private static int flagCount;
+
     private static CellsModel[][] cellsBoard;
 
+    /**
+     * Konstruktor
+     * @param height
+     * @param width
+     */
     public BoardModel(int height, int width) {
         this.cellsHeight = height;
         this.cellsWidth = width;
         cellsBoard = new CellsModel[cellsHeight][cellsWidth];
     }
 
+    /**
+     * Minen auf Spielfeld setzen
+     */
     public void setMines(){
         Random rn = new Random();
         for (int i = 0; i < mineCount ; i++) {
@@ -29,6 +42,12 @@ public class BoardModel {
         }
     }
 
+    /**
+     * Abfrage der Nachbarzellen
+     * @param currCell
+     * @return
+     * @throws Exception
+     */
     public int checkCellsAround(CellsModel currCell) throws Exception{
 
         int mineCounter = 0;
@@ -54,6 +73,10 @@ public class BoardModel {
         return mineCounter;
     }
 
+    /**
+     * Flagge auf Spielfeld setzen
+     * @param currCell
+     */
     public void setFlag (CellsModel currCell) {
         if (currCell.checkFlag() == false && flagCount < mineCount ) {
             currCell.setFlag(true);
@@ -67,7 +90,12 @@ public class BoardModel {
 
     }
 
-    public void openCells (CellsModel currCell) throws Exception {
+    /**
+     * Zelle anzeigen
+     * @param currCell
+     * @throws Exception
+     */
+        public void openCells (CellsModel currCell) throws Exception {
         if(currCell.checkOpen() || currCell.checkFlag()){
             return;
         }
@@ -86,6 +114,9 @@ public class BoardModel {
 
     }
 
+    /**
+     * Minen auf Spielfeld anzeigen
+     */
     public void showBoard() {
         for (int i = 0; i < cellsHeight; i++) {
             for (int j = 0; j <  cellsWidth; j++) {
